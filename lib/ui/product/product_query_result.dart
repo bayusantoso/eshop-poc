@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:lotte_ecommerce/models/product/product.dart';
 import 'package:lotte_ecommerce/filters/product_filter.dart';
+import 'package:lotte_ecommerce/models/store/store.dart';
 import 'package:lotte_ecommerce/ui/cart/cart.dart';
 import 'package:lotte_ecommerce/ui/components/product_shimmer.dart';
 import 'package:lotte_ecommerce/blocs/product_bloc.dart';
@@ -32,72 +33,97 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
     _txtController.text = query;
   }
 
-  Widget buildList(AsyncSnapshot<ProductList?> snapshot) {
-    List<Product> products = snapshot.data!.results;
+  Widget buildList(AsyncSnapshot<StoreList?> snapshot) {
     return RefreshIndicator(
         onRefresh: _onRefresh,
-        child: GridView.count(
-            crossAxisCount: 3,
-            controller: ScrollController(keepScrollOffset: false),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            childAspectRatio: 0.6,
-            children: products.map((data) {
-              return Container(
-                height: 250.0,
-                child: Builder(
-                  builder: (BuildContext context) {
-                    return Card(
-                      clipBehavior: Clip.antiAlias,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProductDetail(
-                                        productData: data,
-                                      )));
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 140,
-                              child: Hero(
-                                tag: '${data.id}',
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  imageUrl: data.image.toString(),
-                                  placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
+        child: ListView.builder(
+          itemCount: snapshot.data?.results.length,
+          itemBuilder: (context, position) {
+            Store? data = snapshot.data?.results[position];
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 14.0, left: 8.0, right: 8.0),
+                    child: Text(data!.name.toString(),
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700)),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0),
+                    height: 240.0,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: data.products.map((item) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: 140.0,
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ProductDetail(
+                                                  productData: item,
+                                                )));
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        height: 160,
+                                        child: Hero(
+                                          tag: '${item.id}',
+                                          child: CachedNetworkImage(
+                                            fit: BoxFit.cover,
+                                            imageUrl: item.image.toString(),
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                                    child:
+                                                        CircularProgressIndicator()),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ),
+                                        ),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          item.name.toString(),
+                                          style: const TextStyle(fontSize: 14),
+                                        ),
+                                        subtitle: Text('\Rp ${item.price}',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                fontWeight: FontWeight.w700)),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            ListTile(
-                              title: Text(
-                                data.name.toString(),
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                              subtitle: Text('\Rp ${data.price}',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      fontWeight: FontWeight.w700)),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            }).toList()
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ]);
 
             //GestureDetector(onTap: () {}, child: Text(data!.name.toString()));
-            ));
+          },
+        ));
   }
 
   Future<Null> _onRefresh() async {
@@ -160,7 +186,7 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
         ),
         body: StreamBuilder(
             stream: _productBloc.productListObj,
-            builder: (context, AsyncSnapshot<ProductList?> snapshot) {
+            builder: (context, AsyncSnapshot<StoreList?> snapshot) {
               if (snapshot.hasData) {
                 return buildList(snapshot);
               } else if (snapshot.hasError) {

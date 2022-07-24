@@ -2,7 +2,7 @@
     package="com.example.lotte_ecommerce">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="lotte_ecommerce"
+        android:label="E Shop"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

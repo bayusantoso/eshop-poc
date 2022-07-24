@@ -31,7 +31,7 @@ class Cart {
 
   Cart(Map<String, dynamic> dataJson) {
     _id = dataJson["id"];
-    _total = dataJson["total"];
+    _total = double.tryParse(dataJson["total"].toString());
 
     List<CartItem> cartItems = [];
     if (dataJson["cartItems"] != null) {
@@ -49,23 +49,26 @@ class Cart {
 class CartItem {
   int _productId = 0;
   String _productName = "";
-  double _productPrice = 0;
+  double? _productPrice = 0;
   int _productQty = 1;
-  double _productSubtotal = 0;
+  double? _productSubtotal = 0;
+  String _productImage = "";
 
   int get productId => _productId;
-  String get productName => _productName ;
-  double get productPrice => _productPrice;
+  String get productName => _productName;
+  double? get productPrice => _productPrice;
   int get productQty => _productQty;
-  double get productSubtotal  => _productSubtotal;
+  double? get productSubtotal  => _productSubtotal;
+  String get productImage => _productImage;
 
   CartItem.fromData(this._productId, this._productName, this._productPrice, this._productQty, this._productSubtotal);
 
   CartItem(Map<String, dynamic> dataJson) {
     _productId = dataJson["productId"];
     _productName = dataJson["productName"];
-    _productPrice = dataJson["productPrice"];
+    _productPrice = double.tryParse(dataJson["productPrice"].toString());
     _productQty = dataJson["productQty"];
-    _productSubtotal = dataJson["productSubtotal"];
+    _productSubtotal =  double.tryParse(dataJson["productSubtotal"].toString());
+    _productImage = dataJson["productImage"];
   }
 }

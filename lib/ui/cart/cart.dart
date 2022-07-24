@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -64,21 +65,21 @@ class _CartPageState extends State<CartPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            /*SizedBox(
-                              height: 160,
-                              child: Hero(
-                                tag: '${item.productId}',
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  imageUrl: item.image.toString(),
-                                  placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
+                            ListTile(
+                              leading: SizedBox(
+                                width: 100,
+                                child: Hero(
+                                  tag: '${item.productId}',
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    imageUrl: item.productImage.toString(),
+                                    placeholder: (context, url) => const Center(
+                                        child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
                                 ),
                               ),
-                            ),*/
-                            ListTile(
                               title: Text(
                                 item.productName.toString(),
                                 style: const TextStyle(fontSize: 20),
@@ -112,16 +113,16 @@ class _CartPageState extends State<CartPage> {
                                             mainAxisAlignment: MainAxisAlignment.end,
                                             children: [
                                             IconButton(onPressed: () {
-                                              _cartBloc.addQty(item).then((value) {
-                                                _cartBloc.getCartLists();
-                                              });
-                                            }, icon: const Icon(Icons.add,)),
-                                            Text(item.productQty.toString()),
-                                            IconButton(onPressed: () {
                                               _cartBloc.subQty(item).then((value) {
                                                 _cartBloc.getCartLists();
                                               });
                                             }, icon: const Icon(Icons.remove,)),
+                                            Text(item.productQty.toString()),
+                                            IconButton(onPressed: () {
+                                              _cartBloc.addQty(item).then((value) {
+                                                _cartBloc.getCartLists();
+                                              });
+                                            }, icon: const Icon(Icons.add,)),
                                           ],),
                                         )
                                 )

@@ -1,15 +1,15 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:lotte_ecommerce/resources/product_provider.dart';
-import 'package:lotte_ecommerce/models/product/product.dart';
+import 'package:lotte_ecommerce/models/store/store.dart';
 import 'package:lotte_ecommerce/filters/product_filter.dart';
 
 class ProductBloc {
-  final _productListFetcher = PublishSubject<ProductList?>();
+  final _productListFetcher = PublishSubject<StoreList?>();
 
-  Stream<ProductList?> get productListObj => _productListFetcher.stream;
+  Stream<StoreList?> get productListObj => _productListFetcher.stream;
 
   getProductLists(ProductFilter? filter) async {
-    ProductList? responseModel = await ProductProvider.getProductLists(filter);
+    StoreList? responseModel = await ProductProvider.getProductLists(filter);
     if (!_productListFetcher.isClosed) {
       _productListFetcher.sink.add(responseModel);
     }

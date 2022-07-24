@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:lotte_ecommerce/models/product/product.dart';
 import 'package:lotte_ecommerce/filters/product_filter.dart';
+import 'package:lotte_ecommerce/models/store/store.dart';
 import 'package:lotte_ecommerce/utils/app_shared_pref.dart';
 import 'package:lotte_ecommerce/utils/strings.dart';
 
 class ProductProvider {
-  static Future<ProductList?> getProductLists(ProductFilter? filter) async {
+  static Future<StoreList?> getProductLists(ProductFilter? filter) async {
     try {
       String query = "";
       if (filter != null) {
@@ -27,7 +28,7 @@ class ProductProvider {
       if (response.statusCode == 200) {
         final responseJson = json.decode(response.body);
         if (responseJson != null) {
-          ProductList responseObj = ProductList.fromJson(responseJson);
+          StoreList responseObj = StoreList.fromJson(responseJson);
           return responseObj;
         } else {
           return null;
