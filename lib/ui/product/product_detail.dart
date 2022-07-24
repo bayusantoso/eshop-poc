@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lotte_ecommerce/blocs/cart_bloc.dart';
+import 'package:lotte_ecommerce/models/cart/cart.dart';
 import 'package:lotte_ecommerce/models/product/product.dart';
+import 'package:lotte_ecommerce/ui/cart/cart.dart';
+import 'package:lotte_ecommerce/ui/product/components/product_add_dialog.dart';
 import 'package:oktoast/oktoast.dart';
 
 class ProductDetail extends StatefulWidget {
@@ -14,8 +18,10 @@ class ProductDetail extends StatefulWidget {
 
 class _ProductDetailState extends State<ProductDetail> {
   final Product productData;
+  bool _onProgress = false;
   _ProductDetailState({required this.productData});
 
+  final CartBloc _cartBloc = CartBloc();
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -34,6 +40,15 @@ class _ProductDetailState extends State<ProductDetail> {
           elevation: 0.0,
           backgroundColor: const Color(0xFFED1C24),
           centerTitle: true,
+          actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.shopping_cart, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const CartPage()));
+                },
+              )
+            ],
         ),
         body: SafeArea(
           top: false,
@@ -141,13 +156,38 @@ class _ProductDetailState extends State<ProductDetail> {
             height: 50,
             child: TextButton(
               onPressed: () {
-                showToastWidget(const Text('hello oktoast'));
+                if (_onProgress) return;
+                
+                setState(() {
+                  _onProgress = true;
+                });
+                _cartBloc.addToCart(productData).then((value) {
+                  if (value) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const Dialog(
+                          shape: BeveledRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10))),
+                          child: ProductAddDialog(),
+                        );
+                      },
+                    );
+                  }
+                  setState(() {
+                    _onProgress = false;
+                  });
+                }).onError((error, stackTrace) {
+                  setState(() {
+                    _onProgress = false;
+                  });
+                });
               },
               style: TextButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 20),
                 primary: Colors.white,
               ),
-              child: const Text('Add to Cart'),
+              child: !_onProgress ? const Text('Add to Cart') : const CircularProgressIndicator(),
             ),
           ),
         ]));

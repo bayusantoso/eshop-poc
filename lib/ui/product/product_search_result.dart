@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:lotte_ecommerce/models/store/store.dart';
+import 'package:lotte_ecommerce/ui/cart/cart.dart';
 import 'package:lotte_ecommerce/ui/components/product_shimmer.dart';
 import 'package:lotte_ecommerce/blocs/store_bloc.dart';
 import 'package:lotte_ecommerce/ui/product/product_detail.dart';
@@ -136,6 +137,15 @@ class _ProductSearchResultState extends State<ProductSearchResult> {
           elevation: 0.0,
           backgroundColor: const Color(0xFFED1C24),
           centerTitle: true,
+          actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.shopping_cart, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const CartPage()));
+                },
+              )
+            ],
         ),
         body: StreamBuilder(
             stream: _storeBloc.storeListObj,

@@ -1,3 +1,3 @@
 class Strings {
-  static String baseApiUrl = "http://192.168.1.100:5100/";
+  static String baseApiUrl = "http://vpnamn.myddns.com:5100/";
 }

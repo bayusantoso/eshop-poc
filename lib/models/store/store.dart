@@ -40,6 +40,7 @@ class Store {
       if (dataJson["products"].length > 0) {
         dataJson["products"].forEach((item) {
           Product productObj = Product(item);
+          productObj.storeId = _id;
           products.add(productObj);
         });
       }

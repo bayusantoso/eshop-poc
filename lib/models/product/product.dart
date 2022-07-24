@@ -34,6 +34,7 @@ class Product {
   String? get image => _image;
   String? get description => _description;
   int? get storeId => _storeId;
+  set storeId(value) => _storeId  = value;
 
   Product(Map<String, dynamic> dataJson) {
     _id = dataJson["id"];

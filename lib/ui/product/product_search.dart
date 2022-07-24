@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lotte_ecommerce/ui/cart/cart.dart';
 import 'package:lotte_ecommerce/ui/product/product_query_result.dart';
 import 'package:lotte_ecommerce/ui/product/product_search_result.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -71,14 +72,24 @@ class _ProductSearchState extends State<ProductSearch> {
             imageUrl: 'assets/logo.webp',
             placeholder: (context, url) => const Center(child: Text("")),
             errorWidget: (context, url, error) => const Icon(Icons.error),
-          ),*/
+          ),
           title: Image.asset(
             'assets/logo.webp',
             scale: 0.1,
-          ),
+          ),*/
+          title: const Text("LOTTE", style: TextStyle(color: Colors.white, fontSize: 20),),
           elevation: 0.0,
           automaticallyImplyLeading: false,
           backgroundColor: const Color(0xFFED1C24),
+          actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.shopping_cart, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const CartPage()));
+                },
+              )
+            ],
         ),
         body: SafeArea(
             top: false,

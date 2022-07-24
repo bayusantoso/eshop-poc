@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:lotte_ecommerce/models/product/product.dart';
 import 'package:lotte_ecommerce/filters/product_filter.dart';
+import 'package:lotte_ecommerce/ui/cart/cart.dart';
 import 'package:lotte_ecommerce/ui/components/product_shimmer.dart';
 import 'package:lotte_ecommerce/blocs/product_bloc.dart';
 import 'package:lotte_ecommerce/ui/product/product_detail.dart';
@@ -147,6 +148,15 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
           elevation: 0.0,
           backgroundColor: const Color(0xFFED1C24),
           centerTitle: true,
+          actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.shopping_cart, color: Colors.white),
+                onPressed: () {
+                  Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const CartPage()));
+                },
+              )
+            ],
         ),
         body: StreamBuilder(
             stream: _productBloc.productListObj,

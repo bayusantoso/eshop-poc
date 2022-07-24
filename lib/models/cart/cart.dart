@@ -1,5 +1,3 @@
-import 'package:lotte_ecommerce/models/product/product.dart';
-
 class CartList {
   int _page = 0;
   int _totalResults = 0;
@@ -33,7 +31,7 @@ class Cart {
 
   Cart(Map<String, dynamic> dataJson) {
     _id = dataJson["id"];
-    _total = dataJson["double"];
+    _total = dataJson["total"];
 
     List<CartItem> cartItems = [];
     if (dataJson["cartItems"] != null) {
@@ -49,32 +47,25 @@ class Cart {
 }
 
 class CartItem {
-  int _id = 0;
-  String? _name;
-  int? _price;
-  String? _image;
-  String? _description;
-  int? _storeId;
-
   int _productId = 0;
-  String productName = "";
-  double productPrice = 0;
-  int productQty = 1;
-  double productSubtotal = 0;
+  String _productName = "";
+  double _productPrice = 0;
+  int _productQty = 1;
+  double _productSubtotal = 0;
 
-  int get id => _id;
-  String? get name => _name;
-  int? get price => _price;
-  String? get image => _image;
-  String? get description => _description;
-  int? get storeId => _storeId;
+  int get productId => _productId;
+  String get productName => _productName ;
+  double get productPrice => _productPrice;
+  int get productQty => _productQty;
+  double get productSubtotal  => _productSubtotal;
+
+  CartItem.fromData(this._productId, this._productName, this._productPrice, this._productQty, this._productSubtotal);
 
   CartItem(Map<String, dynamic> dataJson) {
-    _id = dataJson["id"];
-    _name = dataJson["name"];
-    _price = dataJson["price"];
-    _image = dataJson["image"];
-    _description = dataJson["description"];
-    _storeId = dataJson["storeId"];
+    _productId = dataJson["productId"];
+    _productName = dataJson["productName"];
+    _productPrice = dataJson["productPrice"];
+    _productQty = dataJson["productQty"];
+    _productSubtotal = dataJson["productSubtotal"];
   }
 }
