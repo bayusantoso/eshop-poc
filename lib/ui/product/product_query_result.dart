@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:lotte_ecommerce/models/product/product.dart';
 import 'package:lotte_ecommerce/filters/product_filter.dart';
@@ -22,6 +23,7 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
   final String query;
   _ProductQueryResultState({required this.query});
   final ProductBloc _productBloc = ProductBloc();
+  final oCcy = NumberFormat("#,##0.00", "en_US");
 
   @override
   void initState() {
@@ -102,7 +104,8 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
                                           item.name.toString(),
                                           style: const TextStyle(fontSize: 14),
                                         ),
-                                        subtitle: Text('\Rp ${item.price}',
+                                        subtitle: Text(
+                                            '\Rp ${oCcy.format(item.price)}',
                                             style: TextStyle(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -175,14 +178,14 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
           backgroundColor: const Color(0xFFED1C24),
           centerTitle: true,
           actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const CartPage()));
-                },
-              )
-            ],
+            IconButton(
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CartPage()));
+              },
+            )
+          ],
         ),
         body: StreamBuilder(
             stream: _productBloc.productListObj,

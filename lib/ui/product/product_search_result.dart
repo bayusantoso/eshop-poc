@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lotte_ecommerce/filters/store_filter.dart';
 import 'dart:async';
 import 'package:lotte_ecommerce/models/store/store.dart';
 import 'package:lotte_ecommerce/ui/cart/cart.dart';
@@ -8,7 +10,9 @@ import 'package:lotte_ecommerce/blocs/store_bloc.dart';
 import 'package:lotte_ecommerce/ui/product/product_detail.dart';
 
 class ProductSearchResult extends StatefulWidget {
-  const ProductSearchResult({Key? key}) : super(key: key);
+  final int categoryId;
+  const ProductSearchResult({Key? key, required this.categoryId})
+      : super(key: key);
 
   @override
   _ProductSearchResultState createState() => _ProductSearchResultState();
@@ -16,11 +20,14 @@ class ProductSearchResult extends StatefulWidget {
 
 class _ProductSearchResultState extends State<ProductSearchResult> {
   StoreBloc _storeBloc = StoreBloc();
+  final oCcy = NumberFormat("#,##0.00", "en_US");
 
   @override
   void initState() {
     super.initState();
-    _storeBloc.getStoreLists(null);
+    StoreFilter filter = StoreFilter();
+    filter.categoryId = widget.categoryId.toString();
+    _storeBloc.getStoreLists(filter);
   }
 
   Widget buildList(AsyncSnapshot<StoreList?> snapshot) {
@@ -92,7 +99,8 @@ class _ProductSearchResultState extends State<ProductSearchResult> {
                                           item.name.toString(),
                                           style: const TextStyle(fontSize: 14),
                                         ),
-                                        subtitle: Text('\Rp ${item.price}',
+                                        subtitle: Text(
+                                            '\Rp ${oCcy.format(item.price)}',
                                             style: TextStyle(
                                                 color: Theme.of(context)
                                                     .colorScheme
@@ -138,14 +146,14 @@ class _ProductSearchResultState extends State<ProductSearchResult> {
           backgroundColor: const Color(0xFFED1C24),
           centerTitle: true,
           actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const CartPage()));
-                },
-              )
-            ],
+            IconButton(
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CartPage()));
+              },
+            )
+          ],
         ),
         body: StreamBuilder(
             stream: _storeBloc.storeListObj,

@@ -12,10 +12,11 @@ class ProductSearch extends StatefulWidget {
 }
 
 class Categories {
+  int id;
   String? label;
   String? url;
 
-  Categories(this.label, this.url);
+  Categories(this.id, this.label, this.url);
 }
 
 class _ProductSearchState extends State<ProductSearch> {
@@ -25,13 +26,13 @@ class _ProductSearchState extends State<ProductSearch> {
   void initState() {
     super.initState();
 
-    imgList.add(Categories("Produk Segar", "assets/produk_segar.jpg"));
-    imgList.add(Categories("Bahan Makanan", "assets/bahan_makanan.jpg"));
-    imgList
-        .add(Categories("Olahan Susu dan Telur", "assets/susu_dan_olahan.jpg"));
-    imgList.add(Categories("Makanan Ringan", "assets/makanan_ringan.jpg"));
-    imgList
-        .add(Categories("Rumah Tangga dan Hewan", "assets/rumah_tangga.jpg"));
+    imgList.add(Categories(1, "Produk Segar", "assets/produk_segar.jpg"));
+    imgList.add(Categories(2, "Bahan Makanan", "assets/bahan_makanan.jpg"));
+    imgList.add(
+        Categories(3, "Olahan Susu dan Telur", "assets/susu_dan_olahan.jpg"));
+    imgList.add(Categories(4, "Makanan Ringan", "assets/makanan_ringan.jpg"));
+    imgList.add(
+        Categories(5, "Rumah Tangga dan Hewan", "assets/rumah_tangga.jpg"));
   }
 
   Widget buildMenuItem(
@@ -77,19 +78,22 @@ class _ProductSearchState extends State<ProductSearch> {
             'assets/logo.webp',
             scale: 0.1,
           ),*/
-          title: const Text("LOTTE", style: TextStyle(color: Colors.white, fontSize: 20),),
+          title: const Text(
+            "LOTTE",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
           elevation: 0.0,
           automaticallyImplyLeading: false,
           backgroundColor: const Color(0xFFED1C24),
           actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed: () {
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const CartPage()));
-                },
-              )
-            ],
+            IconButton(
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CartPage()));
+              },
+            )
+          ],
         ),
         body: SafeArea(
             top: false,
@@ -161,7 +165,7 @@ class _ProductSearchState extends State<ProductSearch> {
                               scale: 0.5,
                             ),
                             const Color.fromARGB(255, 255, 255, 255),
-                            const ProductSearchResult());
+                            ProductSearchResult(categoryId: item.id));
                       }).toList(),
                     ),
                   ),

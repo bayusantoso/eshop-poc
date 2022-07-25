@@ -23,23 +23,23 @@ class ProductList {
 class Product {
   int _id = 0;
   String? _name;
-  int? _price;
+  double? _price;
   String? _image;
   String? _description;
   int? _storeId;
 
   int get id => _id;
   String? get name => _name;
-  int? get price => _price;
+  double? get price => _price;
   String? get image => _image;
   String? get description => _description;
   int? get storeId => _storeId;
-  set storeId(value) => _storeId  = value;
+  set storeId(value) => _storeId = value;
 
   Product(Map<String, dynamic> dataJson) {
     _id = dataJson["id"];
     _name = dataJson["name"];
-    _price = dataJson["price"];
+    _price = double.tryParse(dataJson["price"].toString());
     _image = dataJson["image"];
     _description = dataJson["description"];
     _storeId = dataJson["storeId"];

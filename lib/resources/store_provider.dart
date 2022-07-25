@@ -12,7 +12,7 @@ class StoreProvider {
       String query = "";
       String categoryId = "";
       if (filter != null) {
-        query = filter.name.toString();
+        query = filter.name != null ? filter.name.toString() : '';
         categoryId = filter.categoryId.toString();
       }
 
