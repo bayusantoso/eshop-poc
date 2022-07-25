@@ -126,7 +126,9 @@ class _ProductSearchResultState extends State<ProductSearchResult> {
 
   Future<Null> _onRefresh() async {
     Completer<Null> completer = new Completer<Null>();
-    await _storeBloc.getStoreLists(null);
+    StoreFilter filter = StoreFilter();
+    filter.categoryId = widget.categoryId.toString();
+    await _storeBloc.getStoreLists(filter);
     completer.complete();
     return completer.future;
   }

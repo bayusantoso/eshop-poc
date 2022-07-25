@@ -131,7 +131,9 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
 
   Future<Null> _onRefresh() async {
     Completer<Null> completer = new Completer<Null>();
-    await _productBloc.getProductLists(null);
+    ProductFilter filter = ProductFilter();
+    filter.name = query;
+    await _productBloc.getProductLists(filter);
     completer.complete();
     return completer.future;
   }
