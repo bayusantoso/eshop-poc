@@ -33,6 +33,7 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
     _productBloc.getProductLists(filter);
 
     _txtController.text = query;
+    if (query.isNotEmpty) _isTextExists = true;
   }
 
   Widget buildList(AsyncSnapshot<StoreList?> snapshot) {
@@ -85,9 +86,9 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
                                       SizedBox(
                                         height: 160,
                                         child: Hero(
-                                          tag: 'product_query_result${item.id}',
+                                          tag: 'product_query_result_${data.id}_${item.id}',
                                           child: CachedNetworkImage(
-                                            fit: BoxFit.cover,
+                                            fit: BoxFit.fitWidth,
                                             imageUrl: item.image.toString(),
                                             placeholder: (context, url) =>
                                                 const Center(
@@ -129,16 +130,21 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
         ));
   }
 
+  String newQuery = '';
   Future<Null> _onRefresh() async {
     Completer<Null> completer = new Completer<Null>();
     ProductFilter filter = ProductFilter();
     filter.name = query;
+    if (newQuery != null) {
+      filter.name = newQuery;
+    }
     await _productBloc.getProductLists(filter);
     completer.complete();
     return completer.future;
   }
 
   final TextEditingController _txtController = TextEditingController();
+  bool _isTextExists = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,6 +153,15 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
             height: 40.0,
             child: TextField(
               controller: _txtController,
+               onChanged: (value) {
+                setState(() {
+                  if (value.isNotEmpty) {
+                    _isTextExists = true;
+                  } else {
+                    _isTextExists = false;
+                  }
+                });
+              },
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(
@@ -160,15 +175,20 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
                 hintText: "Search",
                 filled: true,
                 fillColor: Colors.white,
+                suffixIcon: !_isTextExists ? const SizedBox() : IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      _txtController.clear();
+                                      
+                                      setState(() {
+                                        _isTextExists = false;
+                                      });
+                                    }),
               ),
-              style: const TextStyle(fontSize: 15.0, height: 1.0),
+              style: const TextStyle(fontSize: 14.0, height: 1.5),
               onSubmitted: (String value) {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProductQueryResult(
-                              query: value,
-                            )));
+                newQuery = value;
+                _onRefresh();
               },
             ),
           ),

@@ -80,9 +80,9 @@ class _ProductSearchResultState extends State<ProductSearchResult> {
                                       SizedBox(
                                         height: 160,
                                         child: Hero(
-                                          tag: 'product_search_result_${item.id}',
+                                          tag: 'product_search_result_${data.id}_${item.id}',
                                           child: CachedNetworkImage(
-                                            fit: BoxFit.cover,
+                                            fit: BoxFit.fitWidth,
                                             imageUrl: item.image.toString(),
                                             placeholder: (context, url) =>
                                                 const Center(

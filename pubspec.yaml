@@ -70,6 +70,11 @@ flutter:
   #   - images/a_dot_ham.jpeg
 
   assets:
+    - assets/
+    - assets/lotte_header/
+    - assets/lotte_header/1.jpeg
+    - assets/lotte_header/2.jpeg
+    - assets/lotte_header/3.jpeg
     - assets/bahan_makanan.jpg
     - assets/logo.webp
     - assets/makanan_ringan.jpg
