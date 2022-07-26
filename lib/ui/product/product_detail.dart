@@ -62,7 +62,7 @@ class _ProductDetailState extends State<ProductDetail> {
                   width: double.infinity,
                   height: 260,
                   child: Hero(
-                    tag: productData.id,
+                    tag: 'product_detail${productData.id}',
                     child: CachedNetworkImage(
                       fit: BoxFit.cover,
                       imageUrl: productData.image.toString(),

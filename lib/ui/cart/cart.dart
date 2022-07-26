@@ -73,7 +73,7 @@ class _CartPageState extends State<CartPage> {
                                 leading: SizedBox(
                                   width: 100,
                                   child: Hero(
-                                    tag: '${item.productId}',
+                                    tag: 'cart_${item.productId}',
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
                                       imageUrl: item.productImage.toString(),

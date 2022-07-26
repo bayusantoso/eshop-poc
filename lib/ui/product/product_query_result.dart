@@ -85,7 +85,7 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
                                       SizedBox(
                                         height: 160,
                                         child: Hero(
-                                          tag: '${item.id}',
+                                          tag: 'product_query_result${item.id}',
                                           child: CachedNetworkImage(
                                             fit: BoxFit.cover,
                                             imageUrl: item.image.toString(),
