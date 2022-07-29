@@ -30,9 +30,10 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
     super.initState();
     ProductFilter filter = ProductFilter();
     filter.name = query;
-    _productBloc.getProductLists(filter);
+    //_productBloc.getProductLists(filter);
 
     _txtController.text = query;
+
     if (query.isNotEmpty) _isTextExists = true;
   }
 
@@ -86,7 +87,8 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
                                       SizedBox(
                                         height: 160,
                                         child: Hero(
-                                          tag: 'product_query_result_${data.id}_${item.id}',
+                                          tag:
+                                              'product_query_result_${data.id}_${item.id}',
                                           child: CachedNetworkImage(
                                             fit: BoxFit.fitWidth,
                                             imageUrl: item.image.toString(),
@@ -150,10 +152,77 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
     return Scaffold(
         appBar: AppBar(
           title: SizedBox(
+              height: 40,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                child: TextField(
+                  controller: _txtController,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isNotEmpty) {
+                        _isTextExists = true;
+                      } else {
+                        _isTextExists = false;
+                      }
+                    });
+                  },
+                  autofocus: true,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.search,
+                  style: const TextStyle(fontSize: 15.0),
+                  decoration: InputDecoration(
+                    filled: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 0.0, horizontal: 10),
+                    focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          style: BorderStyle.solid,
+                          color: Color.fromARGB(255, 234, 108, 112),
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 1,
+                          style: BorderStyle.solid,
+                          color: Color(0xFFED1C24),
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    //fillColor: const Color.fromARGB(255, 234, 108, 112),
+                    fillColor: const Color.fromARGB(255, 255, 255, 255),
+                    focusColor: const Color.fromARGB(255, 255, 255, 255),
+                    hintText: 'Cari Barang di sini',
+                    prefixIcon: IconButton(
+                      iconSize: 20.0,
+                      icon: const Icon(Icons.search),
+                      onPressed: () {},
+                    ),
+                    suffixIcon: !_isTextExists
+                        ? const SizedBox()
+                        : IconButton(
+                            iconSize: 20.0,
+                            icon: const Icon(Icons.close),
+                            onPressed: () {
+                              _txtController.clear();
+
+                              setState(() {
+                                _isTextExists = false;
+                              });
+                            },
+                          ),
+                  ),
+                  onSubmitted: (String value) {
+                    FocusManager.instance.primaryFocus?.unfocus();
+                    newQuery = value;
+                    _onRefresh();
+                  },
+                ),
+              )),
+          /*SizedBox(
             height: 40.0,
             child: TextField(
               controller: _txtController,
-               onChanged: (value) {
+              onChanged: (value) {
                 setState(() {
                   if (value.isNotEmpty) {
                     _isTextExists = true;
@@ -175,23 +244,25 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
                 hintText: "Search",
                 filled: true,
                 fillColor: Colors.white,
-                suffixIcon: !_isTextExists ? const SizedBox() : IconButton(
-                                    icon: const Icon(Icons.close),
-                                    onPressed: () {
-                                      _txtController.clear();
-                                      
-                                      setState(() {
-                                        _isTextExists = false;
-                                      });
-                                    }),
+                suffixIcon: !_isTextExists
+                    ? const SizedBox()
+                    : IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () {
+                          _txtController.clear();
+
+                          setState(() {
+                            _isTextExists = false;
+                          });
+                        }),
               ),
-              style: const TextStyle(fontSize: 14.0, height: 1.5),
+              style: const TextStyle(fontSize: 15.0),
               onSubmitted: (String value) {
                 newQuery = value;
                 _onRefresh();
               },
             ),
-          ),
+          ),*/
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).pop(),
@@ -209,15 +280,17 @@ class _ProductQueryResultState extends State<ProductQueryResult> {
             )
           ],
         ),
-        body: StreamBuilder(
-            stream: _productBloc.productListObj,
-            builder: (context, AsyncSnapshot<StoreList?> snapshot) {
-              if (snapshot.hasData) {
-                return buildList(snapshot);
-              } else if (snapshot.hasError) {
-                return Text(snapshot.error.toString());
-              }
-              return const ProductShimmer();
-            }));
+        body: _isTextExists
+            ? StreamBuilder(
+                stream: _productBloc.productListObj,
+                builder: (context, AsyncSnapshot<StoreList?> snapshot) {
+                  if (snapshot.hasData) {
+                    return buildList(snapshot);
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  }
+                  return const ProductShimmer();
+                })
+            : Container());
   }
 }

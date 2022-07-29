@@ -12,8 +12,8 @@ class ProductAddDialog extends StatelessWidget {
     Widget goToCart = InkWell(
       onTap: () async {
         Navigator.of(context).pop();
-        Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const CartPage()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const CartPage()));
       },
       child: Container(
         height: 30,
@@ -21,7 +21,7 @@ class ProductAddDialog extends StatelessWidget {
         decoration: BoxDecoration(
             gradient: mainButton,
             boxShadow: const [
-            BoxShadow(
+              BoxShadow(
                 color: Color.fromRGBO(0, 0, 0, 0.16),
                 offset: Offset(0, 5),
                 blurRadius: 10.0,
@@ -50,11 +50,11 @@ class ProductAddDialog extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: RichText(
-                text:const TextSpan(
-                    style:
-                        TextStyle(fontFamily: 'Montserrat', color: Colors.black87),
+                text: const TextSpan(
+                    style: TextStyle(
+                        fontFamily: 'Montserrat', color: Colors.black87),
                     children: [
-                       TextSpan(
+                      TextSpan(
                         text: 'Produk berhasil ditambahkan',
                       ),
                     ]),

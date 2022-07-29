@@ -12,14 +12,14 @@ class Promotions extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
+        /*Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(context, 20)),
           child: SectionTitle(
             title: "Special for you",
             press: () {},
           ),
-        ),
+        ),*/
         SizedBox(height: getProportionateScreenWidth(context, 20)),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
